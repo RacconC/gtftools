@@ -39,5 +39,5 @@ Examples on how to use GTFtools are shown in the above Table.
 
 ## Contact
 
-If any questions, please do not hesitate to contact me at:
+If any questions, please contact my tutor at:
 Hongdong Li, hongdong@csu.edu.cn
