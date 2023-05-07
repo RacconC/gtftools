@@ -198,7 +198,10 @@ def get_tss_region(GTFfile,w='1000-300',tss_bed_file='',chroms=list(map(str,rang
             strand = table[6] 
             tcx = line.split('transcript_id')[1].split('"')[1]
             geneid = line.split('gene_id')[1].split('"')[1]
-            genesymbol = line.split('gene_name')[1].split('"')[1]
+            if "gene_name" in line:
+                genesymbol = line.split('gene_name')[1].split('"')[1]
+            else:
+                genesymbol = geneid
             if  strand == "+":
                 iregion = [chrom,int(table[3])-1-wup,int(table[3])-1+wdown,strand,tcx,geneid,genesymbol]
             elif strand == '-':
@@ -228,7 +231,10 @@ def get_intergenic_region(GTFfile,intergenic_region_file='',chroms=list(map(str,
                 left  = int(table[3])-1
                 right = int(table[4]) 
                 ensid  = line.split('gene_id')[1].split('"')[1]
-                symbol = line.split('gene_name')[1].split('"')[1].upper()
+            if "gene_name" in line:
+                symbol = line.split('gene_name')[1].split('"')[1]
+            else:
+                symbol = ensid
                 record = (chrom,left,right,table[6])
                 if chrom in genebed:
                     genebed[chrom].append(record)
@@ -264,7 +270,10 @@ def get_gene_bed(GTFfile,gene_bed_file='',chroms=list(map(str,range(1,23)))+['X'
 			if table[2] == "gene":
 				#print(line)
 				ensid  = line.split('gene_id')[1].split('"')[1]			
-				symbol = line.split('gene_name')[1].split('"')[1].upper()			
+				if "gene_name" in line:
+					symbol = line.split('gene_name')[1].split('"')[1]
+				else:
+					symbol = ensid		
 				record = (table[0],int(table[3])-1,int(table[4]),table[6],ensid,symbol)
 
 				if 'gene_biotype' in line:
@@ -325,7 +334,10 @@ def get_cissnp_bed(GTFfile,cissnp_file='',chroms=list(map(str,range(1,23)))+['X'
 		if chrom in chroms:
 			if table[2] == "gene":
 				ensid  = line.split('gene_id')[1].split('"')[1]			
-				symbol = line.split('gene_name')[1].split('"')[1]		
+				if "gene_name" in line:
+					symbol = line.split('gene_name')[1].split('"')[1]
+				else:
+					symbol = ensid		
 				
 				
 				start  = int(table[3])
@@ -393,7 +405,10 @@ def get_isoform_bed(GTFfile,isoform_bed_file='',chroms=list(map(str,range(1,23))
 			if table[2] == "transcript":
 				isoformid  = line.split('transcript_id')[1].split('"')[1]			
 				ensid  = line.split('gene_id')[1].split('"')[1]			
-				symbol = line.split('gene_name')[1].split('"')[1].upper()			
+				if "gene_name" in line:
+					symbol = line.split('gene_name')[1].split('"')[1]
+				else:
+					symbol = ensid				
 				record = (table[0],int(table[3])-1,int(table[4]),table[6],isoformid,ensid,symbol)
 
 
